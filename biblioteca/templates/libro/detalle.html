@@ -1,0 +1,21 @@
+<h1>Detalle de libro</h1>
+
+<p>{{ object.titulo }}</p>
+<p>{{ object.fecha }}</p>
+<p>{{ object.categoria }}</p>
+
+<p>--------------Many to many---------------</p>
+
+<ul>
+    {% for autor in object.autores.all %}<!--me traes el objeto de libro TODOS (all) sus autores porque es una relacion
+     muchos a muchos , por eso se recorre en un for-->
+    <li>{{ autor }}</li>
+    {% endfor %}
+    
+</ul>
+
+<p>---------------Agregar Autores---------------------</p>
+<form method="post">
+    <input placeholder="agregar autor"/>
+    <button type="submit">guradar</button>
+</form>

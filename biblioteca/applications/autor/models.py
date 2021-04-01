@@ -27,4 +27,4 @@ class Autor(models.Model):
 
     # La clase Autor tiene que devolver algo
     def __str__(self):
-        return self.nombre + '-' + self.apellidos
+        return str(self.id) + '-' + self.nombre + '-' + self.apellidos
