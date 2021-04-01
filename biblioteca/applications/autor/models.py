@@ -8,7 +8,7 @@ from .managers import AutorManager  # importo el manager que nos hace la consult
 
 # Create your models here.
 
-class Autor(models.Model):
+class Persona(models.Model):
     nombre = models.CharField(
         max_length=50
     )
@@ -20,11 +20,23 @@ class Autor(models.Model):
     )
     edad = models.PositiveIntegerField()  # por defecto te da validadion de numero positivo
 
+    # La clase Persona tiene que devolver algo
+    def __str__(self):
+        return str(self.id) + '-' + self.nombre + '-' + self.apellidos
+
+    class Meta:
+        abstract = True  # Autor y lector heredan de esta clase de Persona, asi no se creara la gabla perosna pero si
+        # que Autor y lector tendran sus atributos
+
+
+class Autor(Persona):
+    seudonimo = models.CharField(
+        'seudonimo',
+        max_length=50,
+        blank=True
+    )
+
     # para conectar la clase AutorManager de managers con la clase Autor, se hace desde
     # su objects de la clase. luego vamos a las vistas para que en return de esa vista lo
     # devuelva los datos desde el manager
     objects = AutorManager()
-
-    # La clase Autor tiene que devolver algo
-    def __str__(self):
-        return str(self.id) + '-' + self.nombre + '-' + self.apellidos
