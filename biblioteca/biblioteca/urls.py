@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('', include('applications.autor.urls')),#siempre se pone la url aqui para poder navegar
     re_path('', include('applications.libro.urls')),#siempre se pone la url aqui para poder navegar
+    re_path('', include('applications.lector.urls')),#siempre se pone la url aqui para poder navegar
 
 ]

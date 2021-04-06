@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_delete
+
 
 # Create your models here.
 from applications.lector.managers import PrestamoManager
@@ -39,5 +41,23 @@ class Prestamo(models.Model):
 
     objects = PrestamoManager()  # vinculacion de models con el manager
 
+    def save(self, *args, **kwargs):# funcion para sobreescribir, para que descuente un librio deasde cualquier parte
+        # que se preste un libto
+        self.libro.stock=self.libro.stock -1 # Accedemos a la clase libro, a su atributo stock a traves de su fk
+        self.libro.save() #actualizamos el stock
+
+        super(Prestamo,self).save(*args,**kwargs)#siemnpre que se sobreescribe se hace super para llamar a  al clase,
+        # se guarda todo lo que llega
+
+
     def __str__(self):
         return self.libro.titulo
+
+# Actualizamos el stoc si se elimina un prestamo
+def update_libro_stock(sender, instance, **kwargs):# sender=hacia donde se va a ejecutar la funcion, instance= instancia
+    # a la que estamos trabajando en ese momento, lo q traemos o hemos guardado
+    instance.libro.stock=instance.libro.stock +1
+    instance.libro.save()# Cuando haya eliminado un registro de libro, se sume 1, lo actualice
+
+post_delete.connect(update_libro_stock, sender=Prestamo) # con el post_delete se actuañiza
+
